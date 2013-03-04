@@ -29,7 +29,7 @@ function resizeCanvas () {
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 
-	width = Math.floor((canvas.width / options.fontSize) / 0.75);
+	width = Math.floor((canvas.width / options.fontSize) / options.aspect);
 	height = (canvas.height / options.fontSize);
 	
 	columnDelayers = makeDelayers(width);
@@ -181,7 +181,7 @@ function drawFrame () {
 	for(var col = 0; col < width; col++) {
 		for(var row = 0; row < height; row++) {
 			var text = columns[col][row];
-			var x = Math.floor(options.fontSize * col * 0.75);
+			var x = Math.floor(options.fontSize * col * options.aspect);
 			var y;
 
 			if(halfSteps[col]) {
@@ -219,9 +219,8 @@ function drawFrame () {
 
 		var c = randChar();
 		columns[obj.x][obj.y] = c;
-		context.fillText(c, Math.floor(options.fontSize * obj.x * 0.75), options.fontSize * obj.y);
-		context.fillText(c, Math.floor(options.fontSize * obj.x * 0.75), (options.fontSize * obj.y)+1);
-		context.fillText(c, Math.floor(options.fontSize * obj.x * 0.75)+1, options.fontSize * obj.y);
-		context.fillText(c, Math.floor(options.fontSize * obj.x * 0.75)+1, (options.fontSize * obj.y)+1);
+		context.fillStyle = options.highlightColor;
+		context.fillText(c, Math.floor(options.fontSize * obj.x * options.aspect), options.fontSize * obj.y);
+		context.fillText(c, Math.floor(options.fontSize * obj.x * options.aspect)+1, (options.fontSize * obj.y)+1);
 	}
 }

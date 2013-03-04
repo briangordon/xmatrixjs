@@ -12,9 +12,14 @@
 				"fpsLimit": 30,
 
 				// The font size of each character in pixels
-				"fontSize": 24,
+				//"fontSize": 24,
+				"fontSize": 18,
+				// The aspect ratio of height to width of each character
+				"aspect": 0.7,
 				// The font color
-				"fontColor": "#22FF22",
+				"fontColor": "#2EFF2E",
+				// The color of falling raindrops
+				"highlightColor": "#6EFF6E",
 
 				// propSlowColumns + propMediumColumns + propFastColumns should be 1.
 				// The proportion of columns which fall slowly. 
@@ -49,7 +54,7 @@
 				// The fewest rows a bright character can drop
 				"dropMinDistance": 10,
 				// The most rows a bright character can drop
-				"dropMaxDistance": 35,
+				"dropMaxDistance": 30,
 				// The number of frames between bright characters moving downward
 				"dropTime": 5,
 
@@ -57,7 +62,7 @@
 				"numRowsToFall": 1,
 
 				// How many frames should be precomputed when resizing or first drawing the window
-				"numTicksToPrecompute": 50
+				"numTicksToPrecompute": 60
 			}
 
 			$(document).ready(function () {
