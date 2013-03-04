@@ -8,56 +8,56 @@
 		<script src="xmatrix.js"></script>
 		<script>
 			var options = {
-					// The frame rate limit
-					"fpsLimit": 30,
+				// The frame rate limit
+				"fpsLimit": 30,
 
-					// The font size of each character in pixels
-					"fontSize": 24,
-					// The font color
-					"fontColor": "#22FF22",
+				// The font size of each character in pixels
+				"fontSize": 24,
+				// The font color
+				"fontColor": "#22FF22",
 
-					// propSlowColumns + propMediumColumns + propFastColumns should be 1.
-					// The proportion of columns which fall slowly. 
-					"propSlowColumns": 0.1,
-					// The proportion of columns which fall at a medium speed. 
-					"propMediumColumns": 0.5,
-					// The proportion of columns which fall rapidly. 
-					"propFastColumns": 0.4,
+				// propSlowColumns + propMediumColumns + propFastColumns should be 1.
+				// The proportion of columns which fall slowly. 
+				"propSlowColumns": 0.1,
+				// The proportion of columns which fall at a medium speed. 
+				"propMediumColumns": 0.5,
+				// The proportion of columns which fall rapidly. 
+				"propFastColumns": 0.4,
 
-					// The minimum number of frames which must pass before an event occurs in a slow column
-					"minSlowTime": 20,
-					// The maximum number of frames which must pass before an event occurs in a slow column
-					"maxSlowTime": 40,
-					// The minimum number of frames which must pass before an event occurs in a medium column
-					"minMediumTime": 5,
-					// The maximum number of frames which must pass before an event occurs in a medium column
-					"maxMediumTime": 10,
-					// The minimum number of frames which must pass before an event occurs in a fast column
-					"minFastTime": 1,
-					// The maximum number of frames which must pass before an event occurs in a fast column
-					"maxFastTime": 5,
+				// The minimum number of frames which must pass before an event occurs in a slow column
+				"minSlowTime": 20,
+				// The maximum number of frames which must pass before an event occurs in a slow column
+				"maxSlowTime": 40,
+				// The minimum number of frames which must pass before an event occurs in a medium column
+				"minMediumTime": 5,
+				// The maximum number of frames which must pass before an event occurs in a medium column
+				"maxMediumTime": 10,
+				// The minimum number of frames which must pass before an event occurs in a fast column
+				"minFastTime": 1,
+				// The maximum number of frames which must pass before an event occurs in a fast column
+				"maxFastTime": 5,
 
-					// The probability of starting a gap instead of writing a character
-					"gapProbability": 0.04,
-					// The shortest possible vertical gap. This must be at least 1.
-					"minGap": 2,
-					// The longest possible vertical gap
-					"maxGap": 8,
+				// The probability of starting a gap instead of writing a character
+				"gapProbability": 0.04,
+				// The shortest possible vertical gap. This must be at least 1.
+				"minGap": 2,
+				// The longest possible vertical gap
+				"maxGap": 8,
 
-					// The probability of a new bright character appearing on any given frame
-					"dropProbability": 1,
-					// The fewest rows a bright character can drop
-					"dropMinDistance": 10,
-					// The most rows a bright character can drop
-					"dropMaxDistance": 35,
-					// The number of frames between bright characters moving downward
-					"dropTime": 5,
+				// The probability of a new bright character appearing on any given frame
+				"dropProbability": 1,
+				// The fewest rows a bright character can drop
+				"dropMinDistance": 10,
+				// The most rows a bright character can drop
+				"dropMaxDistance": 35,
+				// The number of frames between bright characters moving downward
+				"dropTime": 5,
 
-					// How many rows a column should fall when an event occurs
-					"numRowsToFall": 1,
+				// How many rows a column should fall when an event occurs
+				"numRowsToFall": 1,
 
-					// How many frames should be precomputed when resizing or first drawing the window
-					"numTicksToPrecompute": 50
+				// How many frames should be precomputed when resizing or first drawing the window
+				"numTicksToPrecompute": 50
 			}
 
 			$(document).ready(function () {
