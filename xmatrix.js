@@ -25,6 +25,24 @@ var drops;
 // The time in milliseconds-since-the-epoch that the last frame was drawn. This is useful for the frame limiter.
 var lastFrameTime = 0;
 
+// The figlet result
+var grid;
+
+// Are we displaying a message?
+var messageMode;
+
+// The first column of a message's text
+var startColumn;
+
+// The Y coordinate of the bottom of the text, measured from the top of the screen.
+var gridProgress;
+
+// The number of frames remaining in a pause
+var pause;
+
+// The number of frames remaining in a fast screen-filling drop
+var runDry;
+
 function resizeCanvas () {
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
@@ -38,6 +56,10 @@ function resizeCanvas () {
 	gaps = [];
 	halfSteps = [];
 	drops = [];
+
+	messageMode = false;
+	pause = 0;
+	runDry = 0;
 
 	for(var i = 0; i < width; i++) {
 		columnDelays[i] = 0;
@@ -113,36 +135,93 @@ function xmatrixStart () {
 	}
 }
 
+function doMessage (text) {
+	if(!Figlet) {
+		throw new "vector-figlet library required to display messages"
+	}
+	var fig = new Figlet(1);
+	grid = fig.render(text);
+
+	// Which columns are going to be affected by the message?
+	var messageWidth = 0;
+	for(var i=0; i<grid.length; i++) {
+		if(grid[i].length > messageWidth) {
+			messageWidth = grid[i].length;
+		}
+	}
+
+	var size = Math.min(7, Math.floor(width/messageWidth))
+
+	// Now that we know how much space the message will take up, create the real grid with the correct font size
+	fig = new Figlet(size);
+	grid = fig.render(text);
+
+	// Which columns are going to be affected by the message?
+	messageWidth = 0;
+	for(var i=0; i<grid.length; i++) {
+		if(grid[i].length > messageWidth) {
+			messageWidth = grid[i].length;
+		}
+	}
+	startColumn = Math.floor((width - messageWidth) / 2);
+
+	// Reset the column delays for all columns
+	for(var i=0; i<width; i++) {
+		columnDelays[i] = options.messageSpeed;
+	}
+	gridProgress = 0;
+	messageMode = true;
+
+	// Synchronize half steps
+	for(var i=0; i<width; i++) {
+		halfSteps[i] = false;
+	}
+
+	runDry = Math.floor(height);
+}
+
 function writeGap (i) {
 	gaps[i]--;
-	// Add numRowsToFall spaces
-	for(var j = 0; j < options.numRowsToFall; j++) {
-		columns[i].splice(0, 0, "");
-	}
+	columns[i].splice(0, 0, "");
 }
 
 function updateColumn (i) {
-	if(gaps[i] > 0) {
-		writeGap(i);
-	} else {
-		if(Math.random() < options.gapProbability) {
-			// Create a gap of 1 to 4 times numRowsToFall
-			gaps[i] = randInt(options.minGap, options.maxGap);
+	// Before display a message we first fill the screen with letters
+	if(runDry > 0) {
+		columns[i].splice(0, 0, randChar());
 
+		columnDelays[i] = options.messageSpeed;
+	} else if(!messageMode) {
+		if(gaps[i] > 0) {
 			writeGap(i);
 		} else {
-			// Add numRowsToFall new characters
-			for(var j = 0; j < options.numRowsToFall; j++) {
+			if(Math.random() < options.gapProbability) {
+				gaps[i] = randInt(options.minGap, options.maxGap);
+
+				writeGap(i);
+			} else {
 				columns[i].splice(0, 0, randChar());
 			}
 		}
+
+		// Reset the amount of time this column will have to wait
+		columnDelays[i] = columnDelayers[i]();
+	} else {
+		if(gridProgress < grid.length) {
+			if(grid[grid.length-gridProgress][i-startColumn]) {
+				columns[i].splice(0, 0, "");
+			} else {
+				columns[i].splice(0, 0, randChar());
+			}
+		} else {
+			columns[i].splice(0, 0, randChar());
+		}
+
+		columnDelays[i] = options.messageSpeed;
 	}
 
 	// Cut the array off after height elements
 	columns[i] = columns[i].slice(0, height+1);
-
-	// Reset the amount of time this column will have to wait
-	columnDelays[i] = columnDelayers[i]();
 }
 
 function drawFrame () {
@@ -152,6 +231,22 @@ function drawFrame () {
 		return;
 	}
 	lastFrameTime = Date.now();
+
+	if(messageMode && gridProgress === Math.floor((height/2) + (grid.length/2))) {
+		// We're done with the message. Freeze here for awhile and then resume the normal effect
+		messageMode = false;
+		pause = options.messagePause;
+	}
+
+	if(pause-- > 0) return;
+
+	if(runDry <= 0 && messageMode && columnDelays[0] <= 0) {
+		gridProgress++;
+	}
+
+	if(runDry > 0) {
+		runDry--;
+	}
 
 	// Add some new text to any column which is due for an event
 	for(var i = 0; i < width; i++) {
@@ -185,7 +280,7 @@ function drawFrame () {
 			var y;
 
 			if(halfSteps[col]) {
-				y = options.fontSize * (row - (options.numRowsToFall / 2));
+				y = options.fontSize * (row - 0.5);
 			} else {
 				y = options.fontSize * row;
 			}
@@ -210,6 +305,13 @@ function drawFrame () {
 	context.shadowColor = options.fontColor;
 	for(var i = 0; i < drops.length; i++) {
 		var obj = drops[i];
+
+		// Don't rain on top of a message
+		if(messageMode) {
+			drops.splice(i, 1);
+			continue;
+		}
+
 		obj.dropsRemaining--;
 
 		obj.y++;

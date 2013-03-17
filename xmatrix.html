@@ -4,6 +4,8 @@
 		<title>xmatrix</title>
 		<link rel="stylesheet" type="text/css" href="xmatrix.css" />
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="fonts/standard.js"></script>
+		<script src="Figlet.js"></script>
 		<script src="utils.js"></script>
 		<script src="xmatrix.js"></script>
 		<script>
@@ -42,6 +44,11 @@
 				// The maximum number of frames which must pass before an event occurs in a fast column
 				"maxFastTime": 5,
 
+				// The number of frames which it takes to drop one space when displaying a message
+				"messageSpeed": 1,
+				// The number of frames to pause after the message is in place
+				"messagePause": 10,
+
 				// The probability of starting a gap instead of writing a character
 				"gapProbability": 0.04,
 				// The shortest possible vertical gap. This must be at least 1.
@@ -58,11 +65,14 @@
 				// The number of frames between bright characters moving downward
 				"dropTime": 5,
 
-				// How many rows a column should fall when an event occurs
-				"numRowsToFall": 1,
-
 				// How many frames should be precomputed when resizing or first drawing the window
-				"numTicksToPrecompute": 60
+				"numTicksToPrecompute": 60,
+
+				// The delay between messages appearing
+				"messageTimeout": 18000,
+
+				// The set of messages to display
+				"messages": ["the game"]
 			}
 
 			$(document).ready(function () {
