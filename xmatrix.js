@@ -207,7 +207,7 @@ function updateColumn (i) {
 		// Reset the amount of time this column will have to wait
 		columnDelays[i] = columnDelayers[i]();
 	} else {
-		if(gridProgress < grid.length) {
+		if(gridProgress <= grid.length) {
 			if(grid[grid.length-gridProgress][i-startColumn]) {
 				columns[i].splice(0, 0, "");
 			} else {
