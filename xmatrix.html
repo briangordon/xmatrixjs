@@ -68,11 +68,9 @@
 				// How many frames should be precomputed when resizing or first drawing the window
 				"numTicksToPrecompute": 60,
 
-				// The delay between messages appearing
-				"messageTimeout": 18000,
-
-				// The set of messages to display
-				"messages": ["the game"]
+				// A server to query for messages. If this is undefined then message polling will be disabled.
+				// "messageServer": "http://localhost:8080/take"
+				"messageServer": "http://127.0.0.1:8080/take"
 			}
 
 			$(document).ready(function () {

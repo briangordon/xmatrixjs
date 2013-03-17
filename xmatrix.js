@@ -25,6 +25,9 @@ var drops;
 // The time in milliseconds-since-the-epoch that the last frame was drawn. This is useful for the frame limiter.
 var lastFrameTime = 0;
 
+// The time in milliseconds-since-the-epoch that we last checked for messages from the message server
+var lastMessageCheck = 0;
+
 // The figlet result
 var grid;
 
@@ -324,5 +327,21 @@ function drawFrame () {
 		context.fillStyle = options.highlightColor;
 		context.fillText(c, Math.floor(options.fontSize * obj.x * options.aspect), options.fontSize * obj.y);
 		context.fillText(c, Math.floor(options.fontSize * obj.x * options.aspect)+1, (options.fontSize * obj.y)+1);
+	}
+
+	if(options.messageServer && !messageMode && (Date.now() - lastMessageCheck > 1000)) {
+		$.ajax({
+			url: options.messageServer,
+			type: "GET",
+			dataType: "text",
+			timeout: 500,
+			success: function (data, status, jqXHR) {
+				if(jqXHR.status !== 204) {
+					doMessage(data);
+				}
+			}
+		});
+
+		lastMessageCheck = Date.now();
 	}
 }
