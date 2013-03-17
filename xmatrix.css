@@ -1,8 +1,9 @@
 @font-face {
 	font-family: "MatrixCode";
-	src: url('matrix_code_nfi.eot?#iefix') format('embedded-opentype'), 
-	     url('matrix code nfi.woff') format('woff'), 
-	     url('matrix code nfi.ttf') format('truetype');
+	src: url("matrix_code_nfi.eot"); /* IE9 Compat Modes */
+	src: url("matrix_code_nfi.eot?#iefix") format("embedded-opentype"), 
+	     url("matrix code nfi.woff") format("woff"), 
+	     url("matrix code nfi.ttf") format("truetype");
 }
 
 body {
@@ -11,5 +12,4 @@ body {
 
 canvas {
 	display: block;
-	font-size: 500px;
 }
