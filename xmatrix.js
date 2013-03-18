@@ -210,8 +210,8 @@ function updateColumn (i) {
 		// Reset the amount of time this column will have to wait
 		columnDelays[i] = columnDelayers[i]();
 	} else {
-		if(gridProgress <= grid.length) {
-			if(grid[grid.length-gridProgress][i-startColumn]) {
+		if(gridProgress < grid.length) {
+			if(grid[grid.length-gridProgress-1][i-startColumn]) {
 				columns[i].splice(0, 0, "");
 			} else {
 				columns[i].splice(0, 0, randChar());
